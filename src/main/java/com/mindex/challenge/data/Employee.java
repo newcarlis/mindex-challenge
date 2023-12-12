@@ -1,5 +1,7 @@
 package com.mindex.challenge.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class Employee {
@@ -59,5 +61,21 @@ public class Employee {
 
     public void setDirectReports(List<Employee> directReports) {
         this.directReports = directReports;
+    }
+
+    @JsonIgnore
+    public int getNumberOfReports(){
+
+        if(directReports == null){
+            return 0;
+        }
+
+        int numberOfReports = 0;
+        for(Employee employee: directReports){
+            // this sum accounts for this direct report and the sub direct reports of this employee
+            numberOfReports += (1 + employee.getNumberOfReports());
+        }
+
+        return numberOfReports;
     }
 }
